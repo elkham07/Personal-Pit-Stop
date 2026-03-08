@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Organizer{% endblock %}
+
+{% block content %}
+<div style="margin-top: 40px; margin-bottom: 24px;">
+    <h1 style="font-size: 2rem; font-weight: 700;">Hello, {{ user.username }}! 👋</h1>
+    <p style="color: var(--text-muted);">Here's a snapshot of your current state.</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ stats.tasks_total }}</div>
+        <div class="stat-label">Total Tasks</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" style="color: var(--success);">{{ stats.tasks_done }}</div>
+        <div class="stat-label">Tasks Done</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" style="color: var(--error);">{{ stats.tasks_overdue }}</div>
+        <div class="stat-label">Overdue</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" style="color: var(--warning);">{{ stats.balance }}</div>
+        <div class="stat-label">Balance balance</div>
+    </div>
+</div>
+
+<div class="dashboard">
+    <!-- Tasks Summary -->
+    <div class="card">
+        <div class="card-title">
+            📋 Recent Tasks
+            <a href="{{ url_for('tasks') }}" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px;">View
+                All</a>
+        </div>
+        {% if tasks %}
+        <div class="task-list">
+            {% for t in tasks %}
+            <div class="task-item">
+                <div class="task-info">
+                    <div class="task-title">{{ t.title }}</div>
+                    <div class="task-meta">
+                        Priority: <span class="badge badge-{{ t.priority }}">{{ t.priority }}</span> |
+                        Deadline: {{ t.deadline or 'Anytime' }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; padding: 24px 0; color: var(--text-muted);">No active tasks found. Start by
+            creating one!</p>
+        {% endif %}
+    </div>
+
+    <!-- Journal Recent -->
+    <div class="card">
+        <div class="card-title">
+            📔 Journal
+            <a href="{{ url_for('journal') }}" class="btn btn-primary"
+                style="font-size: 0.8rem; padding: 6px 12px;">View All</a>
+        </div>
+        {% if journals %}
+        <div>
+            {% for j in journals %}
+            <div style="margin-bottom: 16px;">
+                <h4 style="font-weight: 600;">{{ j.title }}</h4>
+                <p
+                    style="font-size: 0.875rem; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 4px;">
+                    {{ j.content }}</p>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">{{
+                    j.created_at.strftime('%Y-%m-%d') }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; padding: 24px 0; color: var(--text-muted);">No entries yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

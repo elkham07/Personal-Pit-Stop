@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Запись в журнал' if entry else 'Добавить новую запись' }} - Organizer{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 40px auto;">
+    <div class="card">
+        <h2 class="card-title">{{ 'Запись в журнал' if entry else 'Добавить новую запись' }} 📔</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="title" class="form-input" value="{{ entry.title if entry else '' }}"
+                    placeholder="Enter topic..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Mood</label>
+                <div style="display: flex; gap: 12px; margin-top: 10px;">
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="mood" value="happy" {% if entry and entry.mood=='happy' %}checked{%
+                            endif %} style="display: none;">
+                        <span
+                            style="font-size: 1.5rem; filter: grayscale(1); transition: all 0.2s; padding: 12px; border-radius: 8px; border: 1px solid var(--border); display: block;"
+                            class="mood-icon">😊</span>
+                    </label>
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="mood" value="neutral" {% if not entry or entry.mood=='neutral'
+                            %}checked{% endif %} style="display: none;">
+                        <span
+                            style="font-size: 1.5rem; filter: grayscale(1); transition: all 0.2s; padding: 12px; border-radius: 8px; border: 1px solid var(--border); display: block;"
+                            class="mood-icon">😐</span>
+                    </label>
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="mood" value="sad" {% if entry and entry.mood=='sad' %}checked{% endif
+                            %} style="display: none;">
+                        <span
+                            style="font-size: 1.5rem; filter: grayscale(1); transition: all 0.2s; padding: 12px; border-radius: 8px; border: 1px solid var(--border); display: block;"
+                            class="mood-icon">😔</span>
+                    </label>
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="mood" value="excited" {% if entry and entry.mood=='excited'
+                            %}checked{% endif %} style="display: none;">
+                        <span
+                            style="font-size: 1.5rem; filter: grayscale(1); transition: all 0.2s; padding: 12px; border-radius: 8px; border: 1px solid var(--border); display: block;"
+                            class="mood-icon">🤩</span>
+                    </label>
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="mood" value="tired" {% if entry and entry.mood=='tired' %}checked{%
+                            endif %} style="display: none;">
+                        <span
+                            style="font-size: 1.5rem; filter: grayscale(1); transition: all 0.2s; padding: 12px; border-radius: 8px; border: 1px solid var(--border); display: block;"
+                            class="mood-icon">😴</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Content</label>
+                <textarea name="content" class="form-input" rows="10" placeholder="Что у вас на уме?..."
+                    required>{{ entry.content if entry else '' }}</textarea>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Save Entry</button>
+                <a href="{{ url_for('journal') }}" class="btn btn-secondary"
+                    style="flex: 1; text-align: center;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input[type="radio"]:checked+.mood-icon {
+        filter: grayscale(0);
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        box-shadow: 0 4px 6px -1px var(--primary);
+    }
+</style>
+{% endblock %}

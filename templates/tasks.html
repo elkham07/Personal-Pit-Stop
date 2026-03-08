@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Tasks - Organizer{% endblock %}
+
+{% block content %}
+<div style="margin-top: 40px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h1 style="font-size: 2rem; font-weight: 700;">Your Tasks 📋</h1>
+        <p style="color: var(--text-muted);">Manage your productivity and achieve your goals.</p>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+        <div style="display: flex; gap: 4px;">
+            <a href="{{ url_for('tasks', filter='all', priority=priority) }}"
+                class="btn {% if filter_by == 'all' %}btn-primary{% else %}btn-secondary{% endif %}"
+                style="padding: 6px 12px; font-size: 0.8rem;">All</a>
+            <a href="{{ url_for('tasks', filter='active', priority=priority) }}"
+                class="btn {% if filter_by == 'active' %}btn-primary{% else %}btn-secondary{% endif %}"
+                style="padding: 6px 12px; font-size: 0.8rem;">Active</a>
+            <a href="{{ url_for('tasks', filter='done', priority=priority) }}"
+                class="btn {% if filter_by == 'done' %}btn-primary{% else %}btn-secondary{% endif %}"
+                style="padding: 6px 12px; font-size: 0.8rem;">Done</a>
+        </div>
+        <form action="{{ url_for('tasks') }}" method="GET" style="display: flex; align-items: center;">
+            <input type="hidden" name="filter" value="{{ filter_by }}">
+            <select name="priority" onchange="this.form.submit()" class="form-input"
+                style="padding: 6px 12px; font-size: 0.8rem; width: auto;">
+                <option value="all" {% if priority=='all' %}selected{% endif %}>All Priorities</option>
+                <option value="low" {% if priority=='low' %}selected{% endif %}>Low</option>
+                <option value="medium" {% if priority=='medium' %}selected{% endif %}>Medium</option>
+                <option value="high" {% if priority=='high' %}selected{% endif %}>High</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard" style="grid-template-columns: 1fr 340px;">
+    <!-- Tasks List -->
+    <div class="card">
+        {% if tasks %}
+        <div>
+            {% for t in tasks %}
+            <div class="task-item" style="{% if t.completed %}opacity: 0.6;{% endif %}">
+                <form action="{{ url_for('toggle_task', tid=t.id) }}" method="POST">
+                    <input type="checkbox" onChange="this.form.submit()" {% if t.completed %}checked{% endif %}
+                        style="width: 18px; height: 18px; cursor: pointer; margin-right: 16px;">
+                </form>
+                <div class="task-info">
+                    <div class="task-title" style="{% if t.completed %}text-decoration: line-through;{% endif %}">{{
+                        t.title }}</div>
+                    {% if t.description %}
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 4px;">{{ t.description }}
+                    </div>
+                    {% endif %}
+                    <div class="task-meta" style="margin-top: 4px;">
+                        <span class="badge badge-{{ t.priority }}">{{ t.priority }}</span>
+                        {% if t.deadline %}
+                        | 📅 <span style="{% if t.is_overdue %}color: var(--error); font-weight: 700;{% endif %}">{{
+                            t.deadline }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <a href="{{ url_for('edit_task', tid=t.id) }}"
+                        style="text-decoration: none; font-size: 1.25rem;">✏️</a>
+                    <form action="{{ url_for('delete_task', tid=t.id) }}" method="POST"
+                        onsubmit="return confirm('Вы уверены?')">
+                        <button type="submit"
+                            style="background: none; border: none; font-size: 1.25rem; cursor: pointer;">🗑️</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; padding: 48px 0; color: var(--text-muted);">Ничего не найдено. Давай приступим к
+            работе!</p>
+        {% endif %}
+    </div>
+
+    <!-- Add Task Form -->
+    <div class="card" style="height: fit-content;">
+        <h3 class="card-title">New Task ✨</h3>
+        <form action="{{ url_for('add_task') }}" method="POST">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="title" class="form-input" required placeholder="What needs to be done?">
+            </div>
+            <div class="form-group">
+                <label>Description (optional)</label>
+                <textarea name="description" class="form-input" rows="3" placeholder="Add more details..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Priority</label>
+                <select name="priority" class="form-input">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Deadline</label>
+                <input type="date" name="deadline" class="form-input">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Task</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

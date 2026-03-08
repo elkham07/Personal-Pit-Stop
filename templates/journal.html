@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Journal - Organizer{% endblock %}
+
+{% block content %}
+<div style="margin-top: 40px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h1 style="font-size: 2rem; font-weight: 700;">Personal Journal 📔</h1>
+        <p style="color: var(--text-muted);">Reflect on your day and capture your thoughts.</p>
+    </div>
+    <div style="display: flex; gap: 16px; align-items: center;">
+        <form action="{{ url_for('journal') }}" method="GET" style="display: flex; gap: 8px;">
+            <input type="text" name="search" class="form-input" style="padding: 10px 16px; font-size: 0.9rem;"
+                placeholder="Search entries..." value="{{ search }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <a href="{{ url_for('add_journal') }}" class="btn btn-primary" style="padding: 10px 16px;"> + New Entry </a>
+    </div>
+</div>
+
+<div class="dashboard" style="grid-template-columns: 1fr;">
+    {% if entries %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px;">
+        {% for entry in entries %}
+        <div class="card">
+            <div class="card-title">
+                {{ entry.title }}
+                <span style="font-size: 1.25rem;">
+                    {% if entry.mood == 'happy' %}😊
+                    {% elif entry.mood == 'neutral' %}😐
+                    {% elif entry.mood == 'sad' %}😔
+                    {% elif entry.mood == 'excited' %}🤩
+                    {% elif entry.mood == 'tired' %}😴
+                    {% endif %}
+                </span>
+            </div>
+            <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 12px;">{{
+                entry.created_at.strftime('%B %d, %Y - %H:%M') }}</div>
+            <div style="white-space: pre-wrap; margin-bottom: 24px;">{{ entry.content }}</div>
+            <div
+                style="display: flex; gap: 24px; border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto;">
+                <a href="{{ url_for('edit_journal', jid=entry.id) }}"
+                    style="text-decoration: none; color: var(--primary); font-weight: 600; font-size: 0.875rem; display: flex; align-items: center; gap: 4px;">✏️
+                    Edit Entry</a>
+                <form action="{{ url_for('delete_journal', jid=entry.id) }}" method="POST"
+                    onsubmit="return confirm('Вы уверены?')" style="display: inline;">
+                    <button type="submit"
+                        style="background: none; border: none; color: #ef4444; font-weight: 600; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">🗑️
+                        Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card" style="text-align: center; padding: 64px 0;">
+        <p style="color: var(--text-muted);">Пока никаких записей. Начните писать о своем дне!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
