@@ -4,23 +4,26 @@
 
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 32px;">
-    <h1 style="font-size: 2rem; font-weight: 700;">Sponsorships & Budget 💰</h1>
-    <p style="color: var(--text-muted);">Manage your racing budget and keep the team running.</p>
+    <h1 style="font-size: 2rem; font-weight: 700; color: #fff;">Finance & Budget</h1>
+    <p style="color: #a0aec0;">Manage your racing budget and keep the team running.</p>
 </div>
 
 <!-- Financial Summary Grid -->
 <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
-    <div class="stat-card" style="border-bottom: 4px solid var(--primary);">
-        <div class="stat-label">Total Sponsorship Fund</div>
-        <div class="stat-value" style="font-size: 2rem;">{{ balance }} ₽</div>
+    <div class="stat-card"
+        style="border-bottom: 4px solid var(--primary); background: rgba(60,65,75,0.85); border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="stat-label" style="color: #a0aec0;">Total Fund</div>
+        <div class="stat-value" style="font-size: 2rem;">{{ balance }} $</div>
     </div>
-    <div class="stat-card" style="border-bottom: 4px solid var(--success);">
-        <div class="stat-label">Income (Sponsors)</div>
-        <div class="stat-value" style="color: var(--success);">+ {{ income }} ₽</div>
+    <div class="stat-card"
+        style="border-bottom: 4px solid var(--success); background: rgba(60,65,75,0.85); border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="stat-label" style="color: #a0aec0;">Income</div>
+        <div class="stat-value" style="color: var(--success);">+ {{ income }} $</div>
     </div>
-    <div class="stat-card" style="border-bottom: 4px solid var(--error);">
-        <div class="stat-label">Outgoings (Parts & Fuel)</div>
-        <div class="stat-value" style="color: var(--error);">- {{ expense }} ₽</div>
+    <div class="stat-card"
+        style="border-bottom: 4px solid var(--error); background: rgba(60,65,75,0.85); border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="stat-label" style="color: #a0aec0;">Outgoings</div>
+        <div class="stat-value" style="color: var(--error);">- {{ expense }} $</div>
     </div>
 </div>
 
@@ -63,7 +66,7 @@
                             r.category }}</span></td>
                     <td
                         style="padding: 16px 8px; text-align: right; font-weight: 600; color: {% if r.type == 'income' %}var(--success){% else %}var(--error){% endif %};">
-                        {% if r.type == 'income' %}+{% else %}-{% endif %} {{ r.amount }} ₽
+                        {% if r.type == 'income' %}+{% else %}-{% endif %} {{ r.amount }} $
                     </td>
                     <td style="padding: 16px 8px; text-align: right;">
                         <form action="{{ url_for('delete_finance', fid=r.id) }}" method="POST"
@@ -85,14 +88,14 @@
     <!-- Right Column -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
         <div class="card">
-            <h3 class="card-title">New Log Entry ✨</h3>
+            <h3 class="card-title" style="color: #1e293b;">New Log Entry</h3>
             <form action="{{ url_for('add_finance') }}" method="POST">
                 <div class="form-group">
                     <label>Description</label>
                     <input type="text" name="title" class="form-input" required placeholder="What was it for?">
                 </div>
                 <div class="form-group">
-                    <label>Amount (₽)</label>
+                    <label>Amount ($)</label>
                     <input type="number" step="0.01" name="amount" class="form-input" required placeholder="0.00">
                 </div>
                 <div class="form-group">
@@ -123,7 +126,7 @@
                     <div
                         style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 4px;">
                         <span>{{ cat }}</span>
-                        <span style="font-weight: 600;">{{ val }} ₽</span>
+                        <span style="font-weight: 600;">{{ val }} $</span>
                     </div>
                     <div style="height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
                         <div

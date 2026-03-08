@@ -5,7 +5,7 @@
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center;">
     <div>
-        <h1 style="font-size: 2rem; font-weight: 700;">Driver's Log 📔</h1>
+        <h1 style="font-size: 2rem; font-weight: 700;color: #fff">Driver's Log </h1>
         <p style="color: var(--text-muted);">Post-race analysis and daily reflections.</p>
     </div>
     <div style="display: flex; gap: 16px; align-items: center;">
@@ -40,12 +40,12 @@
             <div
                 style="display: flex; gap: 24px; border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto;">
                 <a href="{{ url_for('edit_journal', jid=entry.id) }}"
-                    style="text-decoration: none; color: var(--primary); font-weight: 600; font-size: 0.875rem; display: flex; align-items: center; gap: 4px;">✏️
+                    style="text-decoration: none; color: #ee7b7b; font-weight: 600; font-size: 0.875rem; display: flex; align-items: center; gap: 4px;">
                     Edit Entry</a>
                 <form action="{{ url_for('delete_journal', jid=entry.id) }}" method="POST"
                     onsubmit="return confirm('Вы уверены?')" style="display: inline;">
                     <button type="submit"
-                        style="background: none; border: none; color: #ef4444; font-weight: 600; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">🗑️
+                        style="background: none; border: none; color: #ee7b7b; font-weight: 600; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">🗑️
                         Delete</button>
                 </form>
             </div>

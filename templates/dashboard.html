@@ -4,27 +4,31 @@
 
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 24px;">
-    <h1 style="font-size: 2rem; font-weight: 700;">Pit Lane: {{ user.username }} 🏎️</h1>
+    <h1 style="font-size: 2rem; font-weight: 700; color: #fff;">Pit Lane: {{ user.username }}</h1>
     <p style="color: var(--text-muted);">Ready for the next session? Check your telemetry.</p>
 </div>
 
 <!-- Stats Grid -->
 <div class="stats-grid">
-    <div class="stat-card">
+    <div class="stat-card" style="background: rgba(60,65,75,0.85); border: 1px solid rgba(255,255,255,0.12);">
+
         <div class="stat-value">{{ stats.tasks_total }}</div>
-        <div class="stat-label">Total Races</div>
+        <div class="stat-label" style="color: #a0aec0;">Total Races</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-value" style="color: var(--success);">{{ stats.tasks_done }}</div>
-        <div class="stat-label">Podiums (Done)</div>
+    <div class="stat-card" style="background: rgba(60,65,75,0.85); border: 1px solid rgba(255,255,255,0.12);">
+
+        <div class="stat-value">{{ stats.tasks_done }}</div>
+        <div class="stat-label" style="color: #a0aec0;">Podiums (Done)</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-value" style="color: var(--primary);">{{ stats.best_laps_count or 0 }}</div>
-        <div class="stat-label">Fastest Laps (Improved)</div>
+    <div class="stat-card" style="background: rgba(60,65,75,0.85); border: 1px solid rgba(255,255,255,0.12);">
+
+        <div class="stat-value">{{ stats.best_laps_count or 0 }}</div>
+        <div class="stat-label" style="color: #a0aec0;">Fastest Laps (Improved)</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-value" style="color: var(--warning);">{{ stats.balance }} ₽</div>
-        <div class="stat-label">Team Budget</div>
+    <div class="stat-card" style="background: rgba(60,65,75,0.85); border: 1px solid rgba(255,255,255,0.12);">
+
+        <div class="stat-value">{{ stats.balance }} $</div>
+        <div class="stat-label" style="color: #a0aec0;">Team Budget</div>
     </div>
 </div>
 
@@ -32,7 +36,7 @@
     <!-- Tasks Summary -->
     <div class="card">
         <div class="card-title">
-            📋 Recent Tasks
+            Recent Tasks
             <a href="{{ url_for('tasks') }}" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px;">View
                 All</a>
         </div>
@@ -59,7 +63,7 @@
     <!-- Journal Recent -->
     <div class="card">
         <div class="card-title">
-            📔 Journal
+            Journal
             <a href="{{ url_for('journal') }}" class="btn btn-primary"
                 style="font-size: 0.8rem; padding: 6px 12px;">View All</a>
         </div>

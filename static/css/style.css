@@ -1,7 +1,8 @@
 :root {
-    --primary: #6366f1;
-    --primary-hover: #4f46e5;
-    --bg-main: #f8fafc;
+    --primary: #8b0000;
+    /* Dark Red */
+    --primary-hover: #660000;
+    --bg-main: #000000;
     --bg-card: #ffffff;
     --text-main: #1e293b;
     --text-muted: #64748b;
@@ -21,7 +22,7 @@
 }
 
 body {
-    background-image: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), url('../img/bg.jpg');
+    background-image: url('../img/bg.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -38,9 +39,8 @@ body {
 
 /* Navbar */
 .navbar {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+    background: #000000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 16px 0;
     position: sticky;
     top: 0;
@@ -55,9 +55,10 @@ body {
 
 .nav-logo {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
+    font-weight: 800;
+    color: var(--primary) !important;
     text-decoration: none;
+    letter-spacing: -1px;
 }
 
 .nav-links {
@@ -67,7 +68,7 @@ body {
 }
 
 .nav-links a {
-    color: var(--text-main);
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
@@ -78,8 +79,8 @@ body {
 }
 
 .btn-logout {
-    background: #fee2e2;
-    color: #b91c1c !important;
+    background: #310000 !important;
+    color: #ff4444 !important;
     padding: 8px 16px;
     border-radius: var(--radius);
 }
@@ -93,17 +94,47 @@ body {
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(5px);
+    background: rgba(60, 65, 75, 0.88);
     border-radius: var(--radius);
-    border: 1px solid rgba(226, 232, 240, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 24px;
     box-shadow: var(--shadow);
+    color: #ffffff;
+}
+
+/* Auth Cards */
+.auth-card {
+    background: rgba(0, 0, 0, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.auth-card .card-title {
+    color: #ffffff !important;
+}
+
+.auth-card p {
+    color: #a0aec0 !important;
+}
+
+.auth-card .form-group label {
+    color: #ffffff !important;
+}
+
+.auth-card .form-input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.auth-card .form-input:focus {
+    border-color: var(--primary);
 }
 
 .card-title {
     font-size: 1.25rem;
     font-weight: 600;
+    color: #ffffff;
     margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
@@ -120,7 +151,7 @@ body {
     font-size: 0.875rem;
     font-weight: 500;
     margin-bottom: 6px;
-    color: var(--text-muted);
+    color: #a0aec0;
 }
 
 .form-input {
@@ -140,10 +171,10 @@ body {
     display: inline-block;
     padding: 10px 20px;
     border-radius: 8px;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.1s, opacity 0.2s;
+    transition: all 0.2s;
     border: none;
     text-decoration: none;
 }
@@ -155,10 +186,13 @@ body {
 .btn-primary {
     background: var(--primary);
     color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-primary:hover {
     background: var(--primary-hover);
+    box-shadow: 0 0 15px rgba(139, 0, 0, 0.4);
 }
 
 /* Stats */
@@ -170,8 +204,7 @@ body {
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.93);
     padding: 20px;
     border-radius: var(--radius);
     text-align: center;
@@ -181,7 +214,7 @@ body {
 .stat-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary);
+    color: #ffffff;
 }
 
 .stat-label {

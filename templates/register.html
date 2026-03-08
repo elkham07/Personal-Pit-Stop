@@ -1,36 +1,116 @@
 {% extends "base.html" %}
 
-{% block title %}Register - Organizer{% endblock %}
+{% block title %}Register - Pit-Stop{% endblock %}
 
 {% block content %}
-<div style="max-width: 450px; margin: 80px auto;">
-    <div class="card">
-        <h2 class="card-title">Join Us! 🚀</h2>
-        <p style="color: var(--text-muted); margin-bottom: 24px;">Create your personal account to get started.</p>
 
-        <form method="POST">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" class="form-input" required placeholder="User">
+<!-- Left: Suzuka Track Animation -->
+<div id="suzuka-container" style="
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+    padding-left: 60px;
+">
+    <div style="text-align: center;">
+        <div
+            style="font-size: 2.8rem; font-weight: 900; color: #fff; letter-spacing: -2px; text-shadow: 0 0 30px rgba(139,0,0,0.8);">
+            PIT-STOP</div>
+        <div
+            style="font-size: 0.9rem; color: #a0aec0; letter-spacing: 4px; text-transform: uppercase; margin-top: 6px;">
+            Race Your Productivity</div>
+    </div>
+
+    <div id="svg-createmotionpath" style="position: relative; width: 380px;">
+        <svg viewBox="0 0 304 112" width="380" height="140" style="display: block;">
+            <title>Suzuka</title>
+            <g stroke="none" fill="none" fill-rule="evenodd">
+                <path id="track-path"
+                    d="M189.142857,4 C227.456875,4 248.420457,4.00974888 256.864191,4.00974888 C263.817211,4.00974888 271.61219,3.69583517 274.986231,6.63061513 C276.382736,7.84531176 279.193529,11.3814152 280.479499,13.4815847 C281.719344,15.5064248 284.841964,20.3571626 275.608629,20.3571626 C265.817756,20.3571626 247.262478,19.9013915 243.955117,19.9013915 C239.27946,19.9013915 235.350655,24.7304885 228.6344,24.7304885 C224.377263,24.7304885 219.472178,21.0304113 214.535324,21.0304113 C207.18393,21.0304113 200.882842,30.4798911 194.124187,30.4798911 C186.992968,30.4798911 182.652552,23.6245972 173.457298,23.6245972 C164.83277,23.6245972 157.191045,31.5424105 157.191045,39.1815359 C157.191045,48.466779 167.088672,63.6623005 166.666679,66.9065088 C166.378668,69.1206889 155.842137,79.2568633 151.508744,77.8570506 C145.044576,75.7689355 109.126667,61.6405346 98.7556561,52.9785141 C96.4766876,51.0750861 89.3680347,39.5769094 83.4195005,38.5221785 C80.6048001,38.0231057 73.0179337,38.7426555 74.4158694,42.6956376 C76.7088819,49.1796531 86.3280337,64.1214904 87.1781062,66.9065088 C88.191957,70.2280995 86.4690152,77.0567847 82.2060607,79.2503488 C79.2489435,80.7719756 73.1324132,82.8858479 64.7015706,83.0708761 C55.1604808,83.2802705 44.4254811,80.401884 39.1722168,80.401884 C25.7762119,80.401884 24.3280517,89.1260466 22.476679,94.4501705 C21.637667,96.8629767 20.4337535,108 33.2301959,108 C37.8976087,108 45.0757044,107.252595 53.4789069,103.876424 C61.8821095,100.500252 122.090049,78.119656 128.36127,75.3523302 C141.413669,69.5926477 151.190142,68.4987755 147.018529,52.0784879 C143.007818,36.291544 143.396957,23.4057975 145.221196,19.6589263 C146.450194,17.1346449 148.420955,14.8552817 153.206723,15.7880203 C155.175319,16.1716965 155.097637,15.0525421 156.757598,11.3860986 C158.417558,7.71965506 161.842736,4.00974888 167.736963,4.00974888 C177.205308,4.00974888 184.938832,4 189.142857,4 Z"
+                    stroke="#8b0000" stroke-width="2.5" stroke-dasharray="6,4">
+                </path>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Stats text -->
+    <div style="display: flex; gap: 40px; margin-top: 16px;">
+        <div style="text-align: center;">
+            <div
+                style="font-size: 0.8rem; color: #ffffff; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                Suzuka Circuit</div>
+        </div>
+        <div style="text-align: center;">
+            <div
+                style="font-size: 0.8rem; color: #ffffff; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                Best Lap Timer</div>
+        </div>
+        <div style="text-align: center;">
+            <div
+                style="font-size: 0.8rem; color: #22c55e; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                Green Sector</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Right: Register Form -->
+<div
+    style="position: fixed; top: 0; right: 0; bottom: 0; width: 45%; display: flex; align-items: center; justify-content: center; padding: 60px 80px 60px 20px;">
+    <div style="width: 100%; max-width: 400px;">
+        <div class="card auth-card">
+            <h2 class="card-title">Join the Team! </h2>
+            <p style="color: #a0aec0; margin-bottom: 24px;">Create your garage account to start racing.</p>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-input" required
+                        placeholder="Your driver name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" name="email" id="email" class="form-input" required
+                        placeholder="user@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-input" required
+                        placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+            </form>
+
+            <div style="margin-top: 24px; text-align: center; font-size: 0.875rem; color: #a0aec0;">
+                Already have an account? <a href="{{ url_for('login') }}"
+                    style="color: var(--primary); font-weight: 600;">Sign in here</a>
             </div>
-
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" name="email" id="email" class="form-input" required placeholder="user@example.com">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" class="form-input" required placeholder="••••••••">
-            </div>
-
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
-        </form>
-
-        <div style="margin-top: 24px; text-align: center; font-size: 0.875rem;">
-            Already have an account? <a href="{{ url_for('login') }}"
-                style="color: var(--primary); font-weight: 600;">Sign in here</a>
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="module">
+    import { animate, svg } from 'https://cdn.jsdelivr.net/npm/animejs@4.0.0/+esm';
+
+    animate('.car', {
+        ease: 'linear',
+        duration: 6000,
+        loop: true,
+        ...svg.createMotionPath('#track-path')
+    });
+
+    animate(svg.createDrawable('#track-path'), {
+        draw: '0 1',
+        ease: 'linear',
+        duration: 6000,
+        loop: true,
+    });
+</script>
 {% endblock %}

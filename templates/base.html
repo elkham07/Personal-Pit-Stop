@@ -41,14 +41,14 @@
     <header class="navbar">
         <div class="container">
             <a href="{{ url_for('index') }}" class="nav-logo">
-                🏎️ Pit-Stop
+                Pit-Stop
             </a>
             <nav class="nav-links">
                 {% if session.get('user_id') %}
                 <a href="{{ url_for('dashboard') }}">Paddock</a>
                 <a href="{{ url_for('tasks') }}">Race Tracks</a>
                 <a href="{{ url_for('journal') }}">Driver's Log</a>
-                <a href="{{ url_for('finances') }}">Sponsorships</a>
+                <a href="{{ url_for('finances') }}">Finance</a>
                 <a href="{{ url_for('logout') }}" class="btn-logout">Exit Track</a>
                 {% else %}
                 <a href="{{ url_for('login') }}">Enter Garage</a>
@@ -72,9 +72,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer style="margin-top: 64px; text-align: center; color: var(--text-muted); padding-bottom: 24px;">
-        <p>&copy; 2024 Organizer App. Built with Flask.</p>
-    </footer>
+
 
     {% block scripts %}{% endblock %}
 </body>

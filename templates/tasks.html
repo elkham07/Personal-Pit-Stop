@@ -5,7 +5,7 @@
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center;">
     <div>
-        <h1 style="font-size: 2rem; font-weight: 700;">Race Track 🏎️</h1>
+        <h1 style="font-size: 2rem; font-weight: 700; color: #fff">Race Track</h1>
         <p style="color: var(--text-muted);">Beat your Best Lap and improve your performance.</p>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
@@ -55,9 +55,9 @@
                         <span class="badge badge-{{ t.priority }}">{{ t.priority }}</span>
                         <span
                             style="font-family: monospace; font-size: 0.8rem; background: #eee; padding: 2px 6px; border-radius: 4px;">
-                            ⏱️ Target: {{ t.best_lap }}m
+                            Target: {{ t.best_lap }}m
                             {% if t.completed %}
-                            | 🏁 Result: {{ t.actual_time }}m
+                            | Result: {{ t.actual_time }}m
                             {% endif %}
                         </span>
                         {% if t.deadline %}
@@ -86,7 +86,7 @@
 
     <!-- Add Task Form -->
     <div class="card" style="height: fit-content;">
-        <h3 class="card-title">New Race Entry 🚦</h3>
+        <h3 class="card-title">New Race Entry </h3>
         <form action="{{ url_for('add_task') }}" method="POST">
             <div class="form-group">
                 <label>Task Objective</label>
@@ -111,7 +111,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 700;">START ENGINE
-                🏎️</button>
+            </button>
         </form>
     </div>
 </div>
