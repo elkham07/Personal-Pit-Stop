@@ -1,48 +1,38 @@
-# Organizer - Multi-Purpose Task Manager
+# Pit-Stop - Race Your Productivity 🏎️
 
-A simple yet powerful personal organizer built with Flask and SQLite. It helps you manage your tasks, keep a daily journal, and track your finances in one place.
+Pit-Stop is a high-performance personal manager focused on beating your own records. It's not just a to-do list; it's a telemetry system for your life.
 
 ## Features
 
-### 📋 Tasks
-- **CRUD Operations**: Create, view, edit, and delete tasks.
-- **Organization**: Set task priority (Low, Medium, High) and deadlines.
-- **Filtering**: View tasks by status (All, Active, Completed) or by priority.
-- **Overdue Tracking**: Automatically identifies tasks past their deadline.
+### 🏁 Race Tracks (Tasks)
+- **Best Lap Mechanics**: Every task has a target "Best Lap" (planned time in minutes).
+- **Green Sectors**: If you complete a task faster than your Best Lap, you get a "Green Sector" — a visual indication of time improvement.
+- **Racing Tiers**: Tasks are categorized by "Tyre Compounds" (Priority: Soft/Medium/Hard).
+- **Telemetry**: Track your actual vs planned performance for every task.
 
-### 📔 Journal
-- **Personal Diary**: Record your thoughts, plans, and daily reflections.
-- **Mood Tracking**: Log your mood for each entry with fun icons.
-- **Search**: Quickly find old entries using the search bar.
+### 📔 Driver's Log (Journal)
+- **Post-Race Analysis**: Record your thoughts, strategies, and daily reflections.
+- **Mood Telemetry**: Track your driver state with icons.
 
-### 💰 Finance
-- **Income & Expense Tracker**: Add your transactions with categories.
-- **Real-time Balance**: See your current balance, total income, and total expenses.
-- **Simple Statistics**: Categorized breakdown of your spending habits.
+### 💰 Sponsorships (Finance)
+- **Team Budget**: Manage your income and expenses to keep the team running.
+- **Balance Sheet**: Real-time overview of your financial performance.
 
-### 🔐 Security
-- **User Authentication**: Secure registration and login system.
-- **Privacy**: Each user only has access to their own data.
-- **Password Protection**: Uses Werkzeug's secure password hashing.
+### 🔐 Garage Security
+- **Team Access**: Secure registration and login.
+- **Data Isolation**: Your telemetry is yours alone.
 
 ## Setup & Installation
 
-1. Clone the repository to your local machine.
-2. Install the required dependencies:
+1. Clone the repository.
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Run the application:
+3. Start the race:
    ```bash
    python app.py
    ```
-4. Open your browser and navigate to `http://127.0.0.1:5000/`.
-
-## Technologies Used
-- **Backend**: Python (Flask)
-- **Database**: SQLite (SQLAlchemy)
-- **Frontend**: HTML5, Vanilla CSS, Google Fonts
-- **Security**: Werkzeug Security
 
 ## Design
-The project features a **premium, clean, and responsive design**. It uses a modern CSS grid layout and a custom style system to ensure a great experience on both mobile and desktop devices.
+Pit-Stop features a sleek, racing-inspired UI with modern layouts and performance indicators. The "Green Sector" logic encourages efficiency and continuous improvement.

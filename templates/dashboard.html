@@ -4,27 +4,27 @@
 
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 24px;">
-    <h1 style="font-size: 2rem; font-weight: 700;">Hello, {{ user.username }}! 👋</h1>
-    <p style="color: var(--text-muted);">Here's a snapshot of your current state.</p>
+    <h1 style="font-size: 2rem; font-weight: 700;">Pit Lane: {{ user.username }} 🏎️</h1>
+    <p style="color: var(--text-muted);">Ready for the next session? Check your telemetry.</p>
 </div>
 
 <!-- Stats Grid -->
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-value">{{ stats.tasks_total }}</div>
-        <div class="stat-label">Total Tasks</div>
+        <div class="stat-label">Total Races</div>
     </div>
     <div class="stat-card">
         <div class="stat-value" style="color: var(--success);">{{ stats.tasks_done }}</div>
-        <div class="stat-label">Tasks Done</div>
+        <div class="stat-label">Podiums (Done)</div>
     </div>
     <div class="stat-card">
-        <div class="stat-value" style="color: var(--error);">{{ stats.tasks_overdue }}</div>
-        <div class="stat-label">Overdue</div>
+        <div class="stat-value" style="color: var(--primary);">{{ stats.best_laps_count or 0 }}</div>
+        <div class="stat-label">Fastest Laps (Improved)</div>
     </div>
     <div class="stat-card">
-        <div class="stat-value" style="color: var(--warning);">{{ stats.balance }}</div>
-        <div class="stat-label">Balance balance</div>
+        <div class="stat-value" style="color: var(--warning);">{{ stats.balance }} ₽</div>
+        <div class="stat-label">Team Budget</div>
     </div>
 </div>
 

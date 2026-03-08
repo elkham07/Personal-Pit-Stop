@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Finances - Organizer{% endblock %}
+{% block title %}Budget - Pit-Stop{% endblock %}
 
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 32px;">
-    <h1 style="font-size: 2rem; font-weight: 700;">Financial Overview 💰</h1>
-    <p style="color: var(--text-muted);">Track your income and expenses, and manage your budget.</p>
+    <h1 style="font-size: 2rem; font-weight: 700;">Sponsorships & Budget 💰</h1>
+    <p style="color: var(--text-muted);">Manage your racing budget and keep the team running.</p>
 </div>
 
 <!-- Financial Summary Grid -->
 <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
     <div class="stat-card" style="border-bottom: 4px solid var(--primary);">
-        <div class="stat-label">Current Balance</div>
+        <div class="stat-label">Total Sponsorship Fund</div>
         <div class="stat-value" style="font-size: 2rem;">{{ balance }} ₽</div>
     </div>
     <div class="stat-card" style="border-bottom: 4px solid var(--success);">
-        <div class="stat-label">Total Income</div>
+        <div class="stat-label">Income (Sponsors)</div>
         <div class="stat-value" style="color: var(--success);">+ {{ income }} ₽</div>
     </div>
     <div class="stat-card" style="border-bottom: 4px solid var(--error);">
-        <div class="stat-label">Total Expenses</div>
+        <div class="stat-label">Outgoings (Parts & Fuel)</div>
         <div class="stat-value" style="color: var(--error);">- {{ expense }} ₽</div>
     </div>
 </div>
@@ -28,17 +28,17 @@
     <!-- Records List -->
     <div class="card">
         <div class="card-title" style="margin-bottom: 24px;">
-            Recent Transactions
+            Transaction Telemetry
             <div style="display: flex; gap: 8px;">
                 <a href="{{ url_for('finances', type='all') }}"
                     class="btn {% if ftype == 'all' %}btn-primary{% else %}btn-secondary{% endif %}"
-                    style="padding: 6px 12px; font-size: 0.8rem;">All</a>
+                    style="padding: 6px 12px; font-size: 0.8rem;">Full History</a>
                 <a href="{{ url_for('finances', type='income') }}"
                     class="btn {% if ftype == 'income' %}btn-primary{% else %}btn-secondary{% endif %}"
-                    style="padding: 6px 12px; font-size: 0.8rem;">Income</a>
+                    style="padding: 6px 12px; font-size: 0.8rem;">Inflow</a>
                 <a href="{{ url_for('finances', type='expense') }}"
                     class="btn {% if ftype == 'expense' %}btn-primary{% else %}btn-secondary{% endif %}"
-                    style="padding: 6px 12px; font-size: 0.8rem;">Expense</a>
+                    style="padding: 6px 12px; font-size: 0.8rem;">Outflow</a>
             </div>
         </div>
 
@@ -47,11 +47,11 @@
             <thead>
                 <tr
                     style="text-align: left; border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: 0.875rem;">
-                    <th style="padding: 12px 8px;">Date</th>
-                    <th style="padding: 12px 8px;">Description</th>
-                    <th style="padding: 12px 8px;">Category</th>
+                    <th style="padding: 12px 8px;">Race Date</th>
+                    <th style="padding: 12px 8px;">Detail</th>
+                    <th style="padding: 12px 8px;">Stream</th>
                     <th style="padding: 12px 8px; text-align: right;">Amount</th>
-                    <th style="padding: 12px 8px; text-align: right;">Actions</th>
+                    <th style="padding: 12px 8px; text-align: right;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,7 +67,7 @@
                     </td>
                     <td style="padding: 16px 8px; text-align: right;">
                         <form action="{{ url_for('delete_finance', fid=r.id) }}" method="POST"
-                            onsubmit="return confirm('Вы уверены?')" style="display: inline;">
+                            onsubmit="return confirm('Retract transaction?')" style="display: inline;">
                             <button type="submit"
                                 style="background: none; border: none; font-size: 1.1rem; cursor: pointer;">🗑️</button>
                         </form>
@@ -77,16 +77,15 @@
             </tbody>
         </table>
         {% else %}
-        <p style="text-align: center; padding: 48px 0; color: var(--text-muted);">Никаких транзакций не найдено. Начни с
-            транзакции!</p>
+        <p style="text-align: center; padding: 48px 0; color: var(--text-muted);">No telemetry data. Fuel up or find a
+            sponsor!</p>
         {% endif %}
     </div>
 
-    <!-- Right Column: Graphs or New Transaction -->
+    <!-- Right Column -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
-        <!-- Add Finance Form -->
         <div class="card">
-            <h3 class="card-title">New Transaction ✨</h3>
+            <h3 class="card-title">New Log Entry ✨</h3>
             <form action="{{ url_for('add_finance') }}" method="POST">
                 <div class="form-group">
                     <label>Description</label>
@@ -97,27 +96,27 @@
                     <input type="number" step="0.01" name="amount" class="form-input" required placeholder="0.00">
                 </div>
                 <div class="form-group">
-                    <label>Type</label>
+                    <label>Source Type</label>
                     <select name="type" class="form-input">
-                        <option value="expense" selected>Expense</option>
-                        <option value="income">Income</option>
+                        <option value="expense" selected>Outgoing</option>
+                        <option value="income">Sponsorship</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Category</label>
+                    <label>Budget Category</label>
                     <select name="category" class="form-input">
                         {% for c in categories %}
                         <option value="{{ c }}">{{ c }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Add Transaction</button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Post Transaction</button>
             </form>
         </div>
 
         {% if cat_data %}
         <div class="card">
-            <h3 class="card-title">Expenses by Category</h3>
+            <h3 class="card-title">Outgoings by Category</h3>
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 {% for cat, val in cat_data.items() %}
                 <div>

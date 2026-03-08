@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Todo Organizer{% endblock %}</title>
-    <meta name="description" content="A powerful multi-purpose task manager, journal and finance tracker.">
+    <title>{% block title %}Pit-Stop{% endblock %}</title>
+    <meta name="description" content="Race through your day with Pit-Stop task manager.">
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,36 +13,46 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         /* Smooth transitions for links and buttons */
-        a, button, input {
+        a,
+        button,
+        input {
             transition: all 0.2s ease;
         }
-        
+
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
+
 <body>
     <header class="navbar">
         <div class="container">
             <a href="{{ url_for('index') }}" class="nav-logo">
-                ✨ Organizer
+                🏎️ Pit-Stop
             </a>
             <nav class="nav-links">
                 {% if session.get('user_id') %}
-                <a href="{{ url_for('dashboard') }}">Dashboard</a>
-                <a href="{{ url_for('tasks') }}">Tasks</a>
-                <a href="{{ url_for('journal') }}">Journal</a>
-                <a href="{{ url_for('finances') }}">Finances</a>
-                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+                <a href="{{ url_for('dashboard') }}">Paddock</a>
+                <a href="{{ url_for('tasks') }}">Race Tracks</a>
+                <a href="{{ url_for('journal') }}">Driver's Log</a>
+                <a href="{{ url_for('finances') }}">Sponsorships</a>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Exit Track</a>
                 {% else %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('register') }}">Register</a>
+                <a href="{{ url_for('login') }}">Enter Garage</a>
+                <a href="{{ url_for('register') }}">Join Team</a>
                 {% endif %}
             </nav>
         </div>
@@ -49,13 +60,13 @@
 
     <main class="container fade-in">
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <div class="flash flash-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% endwith %}
 
         {% block content %}{% endblock %}
@@ -67,4 +78,5 @@
 
     {% block scripts %}{% endblock %}
 </body>
+
 </html>

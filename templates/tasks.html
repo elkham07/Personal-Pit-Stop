@@ -5,31 +5,21 @@
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center;">
     <div>
-        <h1 style="font-size: 2rem; font-weight: 700;">Your Tasks 📋</h1>
-        <p style="color: var(--text-muted);">Manage your productivity and achieve your goals.</p>
+        <h1 style="font-size: 2rem; font-weight: 700;">Race Track 🏎️</h1>
+        <p style="color: var(--text-muted);">Beat your Best Lap and improve your performance.</p>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
         <div style="display: flex; gap: 4px;">
             <a href="{{ url_for('tasks', filter='all', priority=priority) }}"
                 class="btn {% if filter_by == 'all' %}btn-primary{% else %}btn-secondary{% endif %}"
-                style="padding: 6px 12px; font-size: 0.8rem;">All</a>
+                style="padding: 6px 12px; font-size: 0.8rem;">All Seasons</a>
             <a href="{{ url_for('tasks', filter='active', priority=priority) }}"
                 class="btn {% if filter_by == 'active' %}btn-primary{% else %}btn-secondary{% endif %}"
-                style="padding: 6px 12px; font-size: 0.8rem;">Active</a>
+                style="padding: 6px 12px; font-size: 0.8rem;">Current Race</a>
             <a href="{{ url_for('tasks', filter='done', priority=priority) }}"
                 class="btn {% if filter_by == 'done' %}btn-primary{% else %}btn-secondary{% endif %}"
-                style="padding: 6px 12px; font-size: 0.8rem;">Done</a>
+                style="padding: 6px 12px; font-size: 0.8rem;">Finish Line</a>
         </div>
-        <form action="{{ url_for('tasks') }}" method="GET" style="display: flex; align-items: center;">
-            <input type="hidden" name="filter" value="{{ filter_by }}">
-            <select name="priority" onchange="this.form.submit()" class="form-input"
-                style="padding: 6px 12px; font-size: 0.8rem; width: auto;">
-                <option value="all" {% if priority=='all' %}selected{% endif %}>All Priorities</option>
-                <option value="low" {% if priority=='low' %}selected{% endif %}>Low</option>
-                <option value="medium" {% if priority=='medium' %}selected{% endif %}>Medium</option>
-                <option value="high" {% if priority=='high' %}selected{% endif %}>High</option>
-            </select>
-        </form>
     </div>
 </div>
 
@@ -39,69 +29,89 @@
         {% if tasks %}
         <div>
             {% for t in tasks %}
-            <div class="task-item" style="{% if t.completed %}opacity: 0.6;{% endif %}">
-                <form action="{{ url_for('toggle_task', tid=t.id) }}" method="POST">
+            <div class="task-item"
+                style="{% if t.completed %}border-left: 4px solid {% if t.is_improved %}var(--success){% else %}var(--border){% endif %}; padding-left: 12px;{% endif %}">
+                <form action="{{ url_for('toggle_task', tid=t.id) }}" method="POST"
+                    style="display: flex; align-items: center;">
                     <input type="checkbox" onChange="this.form.submit()" {% if t.completed %}checked{% endif %}
-                        style="width: 18px; height: 18px; cursor: pointer; margin-right: 16px;">
-                </form>
-                <div class="task-info">
-                    <div class="task-title" style="{% if t.completed %}text-decoration: line-through;{% endif %}">{{
-                        t.title }}</div>
-                    {% if t.description %}
-                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 4px;">{{ t.description }}
-                    </div>
+                        style="width: 20px; height: 20px; cursor: pointer; margin-right: 16px;">
+                    {% if not t.completed %}
+                    <input type="number" name="actual_time" placeholder="Mins"
+                        style="width: 60px; padding: 4px; font-size: 0.8rem; border: 1px solid var(--border); border-radius: 4px; margin-right: 10px;"
+                        title="Actual time taken">
                     {% endif %}
-                    <div class="task-meta" style="margin-top: 4px;">
+                </form>
+
+                <div class="task-info">
+                    <div class="task-title"
+                        style="{% if t.completed %}text-decoration: line-through; color: var(--text-muted);{% endif %}">
+                        {{ t.title }}
+                        {% if t.completed and t.is_improved %}
+                        <span class="badge" style="background: #dcfce7; color: #166534; margin-left: 8px;">🟢 Green
+                            Sector (-{{ t.time_diff }}m)</span>
+                        {% endif %}
+                    </div>
+                    <div class="task-meta" style="margin-top: 4px; display: flex; gap: 10px; align-items: center;">
                         <span class="badge badge-{{ t.priority }}">{{ t.priority }}</span>
+                        <span
+                            style="font-family: monospace; font-size: 0.8rem; background: #eee; padding: 2px 6px; border-radius: 4px;">
+                            ⏱️ Target: {{ t.best_lap }}m
+                            {% if t.completed %}
+                            | 🏁 Result: {{ t.actual_time }}m
+                            {% endif %}
+                        </span>
                         {% if t.deadline %}
-                        | 📅 <span style="{% if t.is_overdue %}color: var(--error); font-weight: 700;{% endif %}">{{
-                            t.deadline }}</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">| 📅 {{ t.deadline }}</span>
                         {% endif %}
                     </div>
                 </div>
-                <div style="display: flex; gap: 8px;">
+
+                <div style="display: flex; gap: 8px; align-items: center;">
                     <a href="{{ url_for('edit_task', tid=t.id) }}"
-                        style="text-decoration: none; font-size: 1.25rem;">✏️</a>
+                        style="text-decoration: none; font-size: 1.1rem;">⚙️</a>
                     <form action="{{ url_for('delete_task', tid=t.id) }}" method="POST"
-                        onsubmit="return confirm('Вы уверены?')">
+                        onsubmit="return confirm('Retire from race?')">
                         <button type="submit"
-                            style="background: none; border: none; font-size: 1.25rem; cursor: pointer;">🗑️</button>
+                            style="background: none; border: none; font-size: 1.1rem; cursor: pointer;">❌</button>
                     </form>
                 </div>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <p style="text-align: center; padding: 48px 0; color: var(--text-muted);">Ничего не найдено. Давай приступим к
-            работе!</p>
+        <p style="text-align: center; padding: 48px 0; color: var(--text-muted);">Empty track. Add a task to start the
+            race!</p>
         {% endif %}
     </div>
 
     <!-- Add Task Form -->
     <div class="card" style="height: fit-content;">
-        <h3 class="card-title">New Task ✨</h3>
+        <h3 class="card-title">New Race Entry 🚦</h3>
         <form action="{{ url_for('add_task') }}" method="POST">
             <div class="form-group">
-                <label>Title</label>
-                <input type="text" name="title" class="form-input" required placeholder="What needs to be done?">
+                <label>Task Objective</label>
+                <input type="text" name="title" class="form-input" required placeholder="What's the goal?">
             </div>
             <div class="form-group">
-                <label>Description (optional)</label>
-                <textarea name="description" class="form-input" rows="3" placeholder="Add more details..."></textarea>
+                <label>Best Lap Target (Minutes)</label>
+                <input type="number" name="best_lap" class="form-input" value="30" min="1">
             </div>
-            <div class="form-group">
-                <label>Priority</label>
-                <select name="priority" class="form-input">
-                    <option value="low">Low</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="high">High</option>
-                </select>
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <label>Priority</label>
+                    <select name="priority" class="form-input">
+                        <option value="low">Soft</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">Hard</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Deadline</label>
+                    <input type="date" name="deadline" class="form-input">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Deadline</label>
-                <input type="date" name="deadline" class="form-input">
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Task</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 700;">START ENGINE
+                🏎️</button>
         </form>
     </div>
 </div>

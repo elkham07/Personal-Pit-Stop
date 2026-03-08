@@ -6,7 +6,7 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dev-secret-key-12345'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///organizer.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pitstop.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -25,17 +25,31 @@ class User(db.Model):
     def check_password(self, pw): return check_password_hash(self.password_hash, pw)
 
 class Task(db.Model):
-    id          = db.Column(db.Integer, primary_key=True)
-    title       = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text, default='')
-    deadline    = db.Column(db.Date, nullable=True)
-    priority    = db.Column(db.String(10), default='medium')
-    completed   = db.Column(db.Boolean, default=False)
-    created_at  = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id     = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    id           = db.Column(db.Integer, primary_key=True)
+    title        = db.Column(db.String(200), nullable=False)
+    description  = db.Column(db.Text, default='')
+    deadline     = db.Column(db.Date, nullable=True)
+    best_lap     = db.Column(db.Integer, default=0) # Planned time in minutes
+    actual_time  = db.Column(db.Integer, default=0) # Actual time in minutes
+    priority     = db.Column(db.String(10), default='medium')
+    completed    = db.Column(db.Boolean, default=False)
+    created_at   = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id      = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
     @property
     def is_overdue(self):
         return bool(self.deadline and not self.completed and self.deadline < date.today())
+
+    @property
+    def is_improved(self):
+        # "Green sector" - completed faster than planned
+        return bool(self.completed and self.best_lap > 0 and self.actual_time < self.best_lap)
+
+    @property
+    def time_diff(self):
+        # Improve performance by showing the gap
+        if not self.completed or self.best_lap == 0: return 0
+        return self.best_lap - self.actual_time
 
 class Journal(db.Model):
     id         = db.Column(db.Integer, primary_key=True)
@@ -60,7 +74,8 @@ class Finance(db.Model):
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if 'user_id' not in session:
+        if 'user_id' not in session or User.query.get(session['user_id']) is None:
+            session.pop('user_id', None) # Clear invalid session
             flash('Войдите в систему.', 'warning')
             return redirect(url_for('login'))
         return f(*args, **kwargs)
@@ -133,6 +148,7 @@ def dashboard():
         'balance':       round(income - expense, 2),
         'income':        round(income, 2),
         'expense':       round(expense, 2),
+        'best_laps_count': sum(1 for t in Task.query.filter_by(user_id=u.id, completed=True).all() if t.is_improved)
     }
     return render_template('dashboard.html', user=u, tasks=tasks, journals=journals, stats=stats)
 
@@ -164,10 +180,21 @@ def add_task():
     if dl:
         try: deadline = datetime.strptime(dl, '%Y-%m-%d').date()
         except: pass
-    db.session.add(Task(title=title, description=request.form.get('description','').strip(),
-                        deadline=deadline, priority=request.form.get('priority','medium'), user_id=u.id))
+    
+    # Pit-Stop: Planned Best Lap
+    try: best_lap = int(request.form.get('best_lap', 0))
+    except: best_lap = 0
+
+    db.session.add(Task(
+        title=title, 
+        description=request.form.get('description','').strip(),
+        deadline=deadline, 
+        priority=request.form.get('priority','medium'), 
+        best_lap=best_lap,
+        user_id=u.id
+    ))
     db.session.commit()
-    flash('Задача добавлена!', 'success')
+    flash('Race started! Task added.', 'success')
     return redirect(url_for('tasks'))
 
 @app.route('/tasks/<int:tid>/toggle', methods=['POST'])
@@ -175,6 +202,13 @@ def add_task():
 def toggle_task(tid):
     t = Task.query.filter_by(id=tid, user_id=session['user_id']).first_or_404()
     t.completed = not t.completed
+    
+    # If completing, check for actual time input
+    actual = request.form.get('actual_time')
+    if actual and t.completed:
+        try: t.actual_time = int(actual)
+        except: pass
+    
     db.session.commit()
     return redirect(url_for('tasks'))
 
@@ -194,10 +228,17 @@ def edit_task(tid):
         t.title       = request.form.get('title', t.title).strip()
         t.description = request.form.get('description', '').strip()
         t.priority    = request.form.get('priority', 'medium')
+        
+        try: t.best_lap = int(request.form.get('best_lap', t.best_lap))
+        except: pass
+        
+        try: t.actual_time = int(request.form.get('actual_time', t.actual_time))
+        except: pass
+
         dl = request.form.get('deadline', '')
         t.deadline = datetime.strptime(dl, '%Y-%m-%d').date() if dl else None
         db.session.commit()
-        flash('Задача обновлена!', 'success')
+        flash('Pit-stop complete! Task updated.', 'success')
         return redirect(url_for('tasks'))
     return render_template('edit_task.html', task=t, user=get_user())
 

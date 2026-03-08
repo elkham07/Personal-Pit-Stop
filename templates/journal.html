@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Journal - Organizer{% endblock %}
+{% block title %}Driver's Log - Pit-Stop{% endblock %}
 
 {% block content %}
 <div style="margin-top: 40px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center;">
     <div>
-        <h1 style="font-size: 2rem; font-weight: 700;">Personal Journal 📔</h1>
-        <p style="color: var(--text-muted);">Reflect on your day and capture your thoughts.</p>
+        <h1 style="font-size: 2rem; font-weight: 700;">Driver's Log 📔</h1>
+        <p style="color: var(--text-muted);">Post-race analysis and daily reflections.</p>
     </div>
     <div style="display: flex; gap: 16px; align-items: center;">
         <form action="{{ url_for('journal') }}" method="GET" style="display: flex; gap: 8px;">
             <input type="text" name="search" class="form-input" style="padding: 10px 16px; font-size: 0.9rem;"
-                placeholder="Search entries..." value="{{ search }}">
+                placeholder="Search logs..." value="{{ search }}">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
         <a href="{{ url_for('add_journal') }}" class="btn btn-primary" style="padding: 10px 16px;"> + New Entry </a>
@@ -54,7 +54,7 @@
     </div>
     {% else %}
     <div class="card" style="text-align: center; padding: 64px 0;">
-        <p style="color: var(--text-muted);">Пока никаких записей. Начните писать о своем дне!</p>
+        <p style="color: var(--text-muted);">Empty logs. Start recording your race telemetry!</p>
     </div>
     {% endif %}
 </div>

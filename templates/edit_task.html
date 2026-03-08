@@ -15,12 +15,22 @@
                 <label>Description (optional)</label>
                 <textarea name="description" class="form-input" rows="4">{{ task.description or '' }}</textarea>
             </div>
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <label>Best Lap (Target)</label>
+                    <input type="number" name="best_lap" class="form-input" value="{{ task.best_lap }}">
+                </div>
+                <div>
+                    <label>Actual Time</label>
+                    <input type="number" name="actual_time" class="form-input" value="{{ task.actual_time }}">
+                </div>
+            </div>
             <div class="form-group">
                 <label>Priority</label>
                 <select name="priority" class="form-input">
-                    <option value="low" {% if task.priority=='low' %}selected{% endif %}>Low</option>
+                    <option value="low" {% if task.priority=='low' %}selected{% endif %}>Soft</option>
                     <option value="medium" {% if task.priority=='medium' %}selected{% endif %}>Medium</option>
-                    <option value="high" {% if task.priority=='high' %}selected{% endif %}>High</option>
+                    <option value="high" {% if task.priority=='high' %}selected{% endif %}>Hard</option>
                 </select>
             </div>
             <div class="form-group">
